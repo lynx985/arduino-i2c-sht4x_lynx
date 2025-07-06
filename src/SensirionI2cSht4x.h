@@ -262,7 +262,9 @@ class SensirionI2cSht4x {
      *
      * @return error_code 0 on success, an error code otherwise.
      */
-    int16_t measureLowestPrecisionTicks(uint16_t& temperatureTicks,
+     int16_t measureLowestPrecisionTicks();
+
+    int16_t readLowestPrecisionTicks(uint16_t& temperatureTicks,
                                         uint16_t& humidityTicks);
 
     /**
