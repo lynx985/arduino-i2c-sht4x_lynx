@@ -1,8 +1,19 @@
-##changes made to the original:
+*****************
+
+changes made to the original:
 measureLowestPrecisionTicks() // only triggers the measurement, data can be read out 2 ms (or more) after triggering
 readLowestPrecisionTicks(uint16_t& temperatureTicks,uint16_t& humidityTicks) //reads the ticks, needs to be triggered at least 2ms earlier)
 
 
+
+
+
+
+
+
+
+
+************************
 
 # Sensirion I²C SHT4X Arduino Library
 
