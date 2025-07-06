@@ -92,19 +92,37 @@ int16_t SensirionI2cSht4x::measureMediumPrecision(float& aTemperature,
     return localError;
 }
 
-int16_t SensirionI2cSht4x::measureLowestPrecision(float& aTemperature,
-                                                  float& aHumidity) {
-    uint16_t tempTicks = 0;
-    uint16_t humiTicks = 0;
-    int16_t localError = 0;
-    localError = measureLowestPrecisionTicks(tempTicks, humiTicks);
-    if (localError != NO_ERROR) {
-        return localError;
-    }
-    aTemperature = SensirionI2cSht4x::signalTemperature(tempTicks);
-    aHumidity = SensirionI2cSht4x::signalHumidity(humiTicks);
+
+
+
+int16_t
+SensirionI2cSht4x::measureLowestPrecisionTicks() {
+
+    uint8_t* buffer_ptr = communication_buffer;
+    SensirionI2CTxFrame txFrame =
+        SensirionI2CTxFrame::createWithUInt8Command(0xe0, buffer_ptr, 6);
+
+      return  SensirionI2CCommunication::sendFrame(_i2cAddress, txFrame, *_i2cBus);
+
+}
+
+int16_t
+SensirionI2cSht4x::readLowestPrecisionTicks(uint16_t& temperatureTicks,
+                                               uint16_t& humidityTicks) {
+int16_t localError = NO_ERROR;
+    uint8_t* buffer_ptr = communication_buffer;
+
+    SensirionI2CRxFrame rxFrame(buffer_ptr, 6);
+    localError = SensirionI2CCommunication::receiveFrame(_i2cAddress, 6,
+                                                         rxFrame, *_i2cBus);
+
+    localError |= rxFrame.getUInt16(temperatureTicks);
+    localError |= rxFrame.getUInt16(humidityTicks);
     return localError;
 }
+
+
+
 
 int16_t SensirionI2cSht4x::activateHighestHeaterPowerLong(float& aTemperature,
                                                           float& aHumidity) {
